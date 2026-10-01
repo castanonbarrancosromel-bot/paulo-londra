@@ -315,12 +315,30 @@ a { color: var(--purple-lt); }
 }
 
 /* ── Colores por tipo ─────────────────────── */
+/* Hook — rosa púrpura ("Ey, baby, no...") */
+.lyric-item.hook.current {
+  color: var(--pink);
+  text-shadow: 0 0 55px rgba(236,72,153,0.6), 0 0 100px rgba(236,72,153,0.2);
+  font-size: clamp(2rem, 5.5vw, 4rem);
+}
+.lyric-item.hook-end.current {
+  color: rgba(255,255,255,0.85);
+  text-shadow: 0 0 35px rgba(236,72,153,0.3);
+  font-size: clamp(1.6rem, 4vw, 3rem);
+  font-style: italic;
+}
 /* Estribillo — dorado */
-.lyric-item.chorus.current,
-.lyric-item.chorus-big.current {
+.lyric-item.chorus.current {
   color: var(--gold-lt);
   text-shadow: 0 0 60px rgba(245,158,11,0.55), 0 0 120px rgba(245,158,11,0.2);
   font-size: clamp(2.2rem, 6vw, 4.8rem);
+}
+/* Outro */
+.lyric-item.outro.current {
+  color: var(--gray);
+  text-shadow: none;
+  font-size: clamp(1rem, 2.5vw, 1.8rem);
+  letter-spacing: 3px;
 }
 /* "Y es triste" — rosa grande */
 .lyric-item.chorus-accent.current {
