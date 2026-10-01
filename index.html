@@ -3,23 +3,28 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Paulo Londra – Tal Vez ♪ Karaoke</title>
-  <meta name="description" content="Karaoke interactivo de Tal Vez - Paulo Londra ft. Ovy On The Drums"/>
+  <title>Paulo Londra – Tal Vez ♪</title>
+  <meta name="description" content="Karaoke interactivo de Tal Vez - Paulo Londra"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
-  <!-- YouTube IFrame API -->
+  <!-- YouTube IFrame API (necesario para reproducir el audio) -->
   <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
 
-  <!-- Background layers -->
+  <!-- Fondos animados -->
   <div class="bg-base"></div>
   <div class="bg-orb orb-a"></div>
   <div class="bg-orb orb-b"></div>
   <div class="bg-orb orb-c"></div>
   <canvas id="bgCanvas" class="bg-canvas"></canvas>
+
+  <!-- YouTube player OCULTO (solo audio) -->
+  <div id="yt-hidden-wrap">
+    <div id="yt-player"></div>
+  </div>
 
   <!-- Header -->
   <header class="top-bar">
@@ -31,10 +36,13 @@
     <div class="section-pill" id="sectionPill">♪</div>
   </header>
 
-  <!-- ===== KARAOKE STAGE ===== -->
+  <!-- ESCENA DE KARAOKE -->
   <main class="stage" id="stage">
 
-    <!-- Idle / Pre-play screen -->
+    <!-- Beat rings container -->
+    <div class="rings-container" id="ringsContainer"></div>
+
+    <!-- Pantalla inicial -->
     <div class="idle-screen" id="idleScreen">
       <div class="idle-vinyl" id="idleVinyl">
         <div class="idle-label">
@@ -44,57 +52,55 @@
       </div>
       <h1 class="idle-song">TAL VEZ</h1>
       <p class="idle-feat">ft. Ovy On The Drums</p>
-      <button class="idle-play-btn" id="idlePlayBtn">
+      <button class="idle-play-btn" id="idlePlayBtn" disabled>
         <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M8 5v14l11-7z"/></svg>
-        Reproducir
+        <span id="idleBtnLabel">Cargando...</span>
       </button>
-      <p class="idle-hint" id="embedErrorMsg" style="display:none">
-        ⚠️ El video no permite incrustar.<br/>
-        <a href="https://youtu.be/bX3S-_jUauc" target="_blank">Ábrelo en YouTube</a> y usa los controles manuales.
+      <p class="embed-error" id="embedErrorMsg" style="display:none">
+        ⚠️ YouTube no permite reproducir este video incrustado.<br/>
+        <a href="https://youtu.be/bX3S-_jUauc" target="_blank">Ábrelo en YouTube ↗</a> y luego vuelve aquí.
       </p>
     </div>
 
-    <!-- Lyric stack (active state) -->
+    <!-- Stack de letras -->
     <div class="lyric-stack" id="lyricStack" style="display:none"></div>
 
-    <!-- Chorus glow pulse -->
+    <!-- Hint de calibración (visible al reproducir) -->
+    <div class="sync-hint" id="syncHint" style="display:none">
+      Presiona <kbd>T</kbd> justo cuando escuches <em>"Ey, oh"</em> — eso sincroniza todo
+    </div>
+
+    <!-- Pulso de coro -->
     <div class="chorus-pulse" id="chorusPulse"></div>
 
   </main>
 
-  <!-- ===== YOUTUBE MINI WIDGET ===== -->
-  <div class="yt-widget" id="ytWidget">
-    <div class="yt-widget-bar">
-      <span class="yt-label">▶ Video Oficial</span>
-      <button class="yt-min-btn" id="ytMinBtn">−</button>
-    </div>
-    <div class="yt-frame-wrap" id="ytFrameWrap">
-      <div id="yt-player"></div>
-    </div>
+  <!-- FRANJA DE SINCRONÍA -->
+  <div class="sync-strip" id="syncStrip">
+    <span class="sync-label">⏱ Sincronía letra:</span>
+    <button class="sync-btn" id="offsetMinus" title="Letra más tarde">−</button>
+    <span class="sync-val" id="offsetVal">0.0 s</span>
+    <button class="sync-btn" id="offsetPlus" title="Letra más temprano">+</button>
+    <span class="sync-tip">· o presiona <kbd>T</kbd> al escuchar la primera palabra</span>
+    <button class="sync-reset" id="offsetReset">Resetear</button>
   </div>
 
-  <!-- ===== PLAYER BAR ===== -->
+  <!-- BARRA DE CONTROLES -->
   <footer class="player-bar">
 
     <button class="play-pause-btn" id="playBtn" disabled>
-      <svg class="ico-play" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>
+      <svg class="ico-play"  viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>
       <svg class="ico-pause" viewBox="0 0 24 24" fill="currentColor" width="22" height="22" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
     </button>
 
     <div class="seek-wrap">
       <div class="seek-bar" id="seekBar">
         <div class="seek-progress" id="seekProgress"></div>
-        <div class="seek-thumb" id="seekThumb"></div>
+        <div class="seek-thumb"    id="seekThumb"></div>
       </div>
     </div>
 
     <span class="time-txt" id="timeTxt">0:00</span>
-
-    <button class="vid-toggle-btn" id="vidToggleBtn" title="Mostrar/ocultar video">
-      <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-        <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-      </svg>
-    </button>
 
   </footer>
 
