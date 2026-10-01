@@ -1,0 +1,753 @@
+/* =============================================
+   PAULO LONDRA - TAL VEZ | Letra Interactiva
+   Estilo: Trap / Urban / Dark Aesthetic
+   ============================================= */
+
+/* ---------- Imports & Variables ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700;900&family=Space+Grotesk:wght@300;400;600;700&display=swap');
+
+:root {
+  --bg-deep:    #07070e;
+  --bg-card:    #0e0e1c;
+  --bg-glass:   rgba(15, 15, 30, 0.75);
+  --purple:     #7c3aed;
+  --purple-lt:  #a855f7;
+  --gold:       #f59e0b;
+  --gold-lt:    #fbbf24;
+  --pink:       #ec4899;
+  --cyan:       #06b6d4;
+  --white:      #f8f8ff;
+  --gray-300:   #a1a1aa;
+  --gray-500:   #52525b;
+  --font-disp:  'Bebas Neue', sans-serif;
+  --font-body:  'Outfit', sans-serif;
+  --font-mono:  'Space Grotesk', sans-serif;
+  --ease-snap:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--white);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 4px; }
+
+/* ---------- Noise Overlay ---------- */
+.noise-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Particles ---------- */
+.particles {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* ---------- Progress Bar ---------- */
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--purple), var(--gold), var(--pink));
+  z-index: 1000;
+  transition: width 0.1s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+/* =============================================
+   HERO
+   ============================================= */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6rem 8vw 4rem;
+  overflow: hidden;
+  gap: 3rem;
+}
+
+/* Gradient orbs */
+.hero-bg-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-gradient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: orbFloat 10s ease-in-out infinite;
+}
+
+.orb-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(124,58,237,0.35), transparent 70%);
+  top: -100px; left: -80px;
+  animation-delay: 0s;
+}
+.orb-2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(236,72,153,0.25), transparent 70%);
+  bottom: -80px; right: 10%;
+  animation-delay: 3s;
+}
+.orb-3 {
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(245,158,11,0.15), transparent 70%);
+  top: 40%; left: 40%;
+  animation-delay: 6s;
+}
+
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(30px, -20px) scale(1.05); }
+  66%       { transform: translate(-20px, 15px) scale(0.95); }
+}
+
+/* Hero content */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  max-width: 600px;
+}
+
+.artist-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(124,58,237,0.15);
+  border: 1px solid rgba(124,58,237,0.4);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--purple-lt);
+  margin-bottom: 1.5rem;
+  backdrop-filter: blur(10px);
+  animation: fadeSlideUp 0.8s var(--ease-out) both;
+}
+
+.badge-dot {
+  width: 7px; height: 7px;
+  background: var(--purple-lt);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(168,85,247,0.5); }
+  50%       { opacity: 0.8; transform: scale(1.1); box-shadow: 0 0 0 6px rgba(168,85,247,0); }
+}
+
+.hero-title {
+  display: flex;
+  flex-direction: column;
+  line-height: 0.9;
+  margin-bottom: 0.75rem;
+}
+
+.title-line {
+  font-family: var(--font-disp);
+  font-size: clamp(5rem, 14vw, 11rem);
+  letter-spacing: -2px;
+  color: var(--white);
+  -webkit-text-stroke: 1px rgba(255,255,255,0.1);
+  animation: fadeSlideUp 0.8s var(--ease-out) 0.1s both;
+  position: relative;
+}
+
+.title-line.highlight {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--gold);
+  text-shadow: 0 0 60px rgba(245,158,11,0.3);
+  animation-delay: 0.2s;
+}
+
+.hero-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--gray-300);
+  margin-bottom: 2.5rem;
+  animation: fadeSlideUp 0.8s var(--ease-out) 0.3s both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  animation: fadeSlideUp 0.8s var(--ease-out) 0.4s both;
+}
+
+.btn-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  color: white;
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: transform 0.2s var(--ease-snap), box-shadow 0.2s ease;
+  box-shadow: 0 0 30px rgba(124,58,237,0.4);
+}
+
+.btn-play:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 0 50px rgba(124,58,237,0.6);
+}
+
+.btn-scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--white);
+  padding: 14px 24px;
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+  font-family: var(--font-body);
+}
+
+.btn-scroll:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.4);
+  transform: translateY(-2px);
+}
+
+.scroll-hint {
+  margin-top: 4rem;
+  animation: fadeSlideUp 0.8s var(--ease-out) 0.6s both;
+}
+
+.scroll-hint-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, var(--purple-lt), transparent);
+  margin: 0 auto;
+  animation: scrollLine 2s ease-in-out infinite;
+}
+
+@keyframes scrollLine {
+  0%, 100% { opacity: 1; transform: scaleY(1) translateY(0); }
+  50%       { opacity: 0.3; transform: scaleY(0.5) translateY(10px); }
+}
+
+/* Vinyl */
+.hero-visual {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  animation: fadeSlideUp 1s var(--ease-out) 0.5s both;
+}
+
+.vinyl-record {
+  position: relative;
+  width: clamp(200px, 30vw, 380px);
+  height: clamp(200px, 30vw, 380px);
+  cursor: pointer;
+}
+
+.vinyl-outer {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: 
+    radial-gradient(circle at 30% 30%, #2a2a3e, #0a0a14),
+    repeating-conic-gradient(from 0deg, #111120 0deg 5deg, #18182a 5deg 10deg);
+  background-blend-mode: overlay;
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,0.05),
+    0 20px 80px rgba(0,0,0,0.8),
+    0 0 60px rgba(124,58,237,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: vinylSpin 8s linear infinite;
+  animation-play-state: running;
+  position: relative;
+  overflow: hidden;
+}
+
+.vinyl-outer::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: repeating-radial-gradient(circle at center, transparent 0%, transparent 4px, rgba(255,255,255,0.015) 4px, rgba(255,255,255,0.015) 5px);
+}
+
+.vinyl-groove {
+  position: absolute;
+  inset: 15%;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.01);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+.vinyl-label {
+  position: relative;
+  z-index: 2;
+  width: 35%;
+  height: 35%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(124,58,237,0.5);
+}
+
+.vinyl-artist, .vinyl-track {
+  font-family: var(--font-disp);
+  font-size: clamp(0.5rem, 1.5vw, 0.85rem);
+  letter-spacing: 0.1em;
+  color: white;
+  line-height: 1.1;
+}
+
+.vinyl-needle {
+  position: absolute;
+  top: 10%;
+  right: -5%;
+  width: 50%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold-lt), var(--gold));
+  transform-origin: right center;
+  transform: rotate(-20deg);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.vinyl-needle::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--gold);
+}
+
+@keyframes vinylSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* =============================================
+   VISUALIZER BAR
+   ============================================= */
+.visualizer-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(7, 7, 14, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(124,58,237,0.2);
+  padding: 12px 8vw;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.vis-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--purple-lt);
+  white-space: nowrap;
+}
+
+.vis-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 28px;
+}
+
+.vis-bar {
+  width: 4px;
+  background: linear-gradient(to top, var(--purple), var(--pink));
+  border-radius: 2px;
+  animation: visBounce 0.8s ease-in-out infinite alternate;
+  animation-delay: var(--delay);
+  min-height: 4px;
+}
+
+@keyframes visBounce {
+  from { height: 4px;  opacity: 0.4; }
+  to   { height: 26px; opacity: 1; }
+}
+
+/* =============================================
+   LYRICS CONTAINER
+   ============================================= */
+.lyrics-container {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 5rem 8vw 8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
+
+/* ---------- Section Header ---------- */
+.lyrics-section {
+  position: relative;
+  animation: sectionReveal 0.6s var(--ease-out) both;
+  animation-play-state: paused;
+}
+
+.lyrics-section.visible {
+  animation-play-state: running;
+}
+
+@keyframes sectionReveal {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gray-300);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 4px 12px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.chorus-tag {
+  color: var(--gold);
+  border-color: rgba(245,158,11,0.4);
+  background: rgba(245,158,11,0.07);
+}
+
+.outro-tag {
+  color: var(--cyan);
+  border-color: rgba(6,182,212,0.4);
+  background: rgba(6,182,212,0.07);
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent);
+}
+
+/* ---------- Lyrics Block ---------- */
+.lyrics-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* ---------- Lyric Line ---------- */
+.lyric-line {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: rgba(248,248,255,0.7);
+  cursor: pointer;
+  position: relative;
+  padding: 3px 12px;
+  margin-left: -12px;
+  border-radius: 6px;
+  transition:
+    color 0.25s ease,
+    transform 0.25s var(--ease-snap),
+    background 0.25s ease,
+    text-shadow 0.25s ease;
+  border-left: 2px solid transparent;
+  user-select: none;
+}
+
+.lyric-line:hover {
+  color: var(--white);
+  background: rgba(124,58,237,0.08);
+  border-left-color: var(--purple-lt);
+  transform: translateX(6px);
+}
+
+.lyric-line.active {
+  color: var(--white);
+  background: rgba(124,58,237,0.15);
+  border-left-color: var(--purple);
+  transform: translateX(8px);
+  text-shadow: 0 0 20px rgba(168,85,247,0.4);
+}
+
+.lyric-line.accent {
+  color: var(--purple-lt);
+  font-weight: 600;
+}
+
+.lyric-line.accent:hover,
+.lyric-line.accent.active {
+  color: var(--white);
+  text-shadow: 0 0 20px rgba(168,85,247,0.5);
+}
+
+/* ---------- Chorus ---------- */
+.chorus-section {
+  position: relative;
+  padding: 2rem;
+  border-radius: 16px;
+  background: rgba(245,158,11,0.03);
+  border: 1px solid rgba(245,158,11,0.12);
+  overflow: hidden;
+}
+
+.chorus-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(245,158,11,0.08), transparent 70%);
+  pointer-events: none;
+}
+
+.chorus-block { gap: 0.6rem; }
+
+.chorus-line {
+  color: rgba(255,255,255,0.8);
+}
+
+.chorus-line:hover,
+.chorus-line.active {
+  background: rgba(245,158,11,0.1);
+  border-left-color: var(--gold);
+  color: var(--white);
+  text-shadow: 0 0 20px rgba(245,158,11,0.4);
+}
+
+.big-line {
+  font-family: var(--font-disp);
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: 1px;
+  color: var(--white);
+  padding-top: 6px;
+}
+
+.big-line.golden {
+  color: var(--gold);
+  text-shadow: 0 0 40px rgba(245,158,11,0.3);
+}
+
+/* ---------- Pre-Chorus ---------- */
+.pre-chorus-section .lyric-line { font-style: italic; }
+
+.repeat-line {
+  color: var(--pink) !important;
+  font-weight: 600 !important;
+}
+
+.repeat-line:hover,
+.repeat-line.active {
+  color: var(--white) !important;
+  border-left-color: var(--pink) !important;
+  background: rgba(236,72,153,0.1) !important;
+  text-shadow: 0 0 20px rgba(236,72,153,0.5) !important;
+}
+
+/* ---------- Outro ---------- */
+.outro-section .lyrics-block {
+  opacity: 0.9;
+}
+
+.fade-out-line {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 600;
+  color: rgba(255,255,255,0.4) !important;
+  font-style: italic;
+  animation: fadeOutPulse 3s ease-in-out infinite;
+}
+
+.fade-out-line::after {
+  content: '';
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  animation: ellipsis 2s steps(3, end) infinite;
+  vertical-align: bottom;
+}
+
+@keyframes fadeOutPulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.7; }
+}
+
+@keyframes ellipsis {
+  from { width: 0; }
+  to   { width: 1em; }
+}
+
+/* =============================================
+   SHARED ANIMATIONS
+   ============================================= */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =============================================
+   FOOTER
+   ============================================= */
+.site-footer {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 3rem 8vw;
+  background: rgba(7,7,14,0.6);
+  backdrop-filter: blur(10px);
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footer-artist {
+  font-family: var(--font-disp);
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  color: var(--white);
+}
+
+.footer-sep { color: var(--gray-500); }
+
+.footer-track {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.footer-credit {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  letter-spacing: 0.05em;
+}
+
+.footer-yt-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--purple-lt);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(168,85,247,0.3);
+  padding: 8px 18px;
+  border-radius: 100px;
+  transition: all 0.2s ease;
+}
+
+.footer-yt-link:hover {
+  background: rgba(168,85,247,0.1);
+  border-color: var(--purple-lt);
+  transform: translateY(-2px);
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 5rem 6vw 3rem;
+    min-height: 90vh;
+  }
+
+  .hero-content { max-width: 100%; }
+  .artist-badge { margin: 0 auto 1.5rem; }
+  .hero-actions { justify-content: center; }
+  .scroll-hint { display: none; }
+
+  .hero-visual {
+    order: -1;
+    margin-bottom: -1rem;
+  }
+
+  .vinyl-record {
+    width: 200px;
+    height: 200px;
+  }
+
+  .lyrics-container {
+    padding: 3rem 6vw 6rem;
+    gap: 3.5rem;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+}
