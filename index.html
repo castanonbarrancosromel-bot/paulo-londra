@@ -1,256 +1,102 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Paulo Londra – Tal Vez | Letra Interactiva</title>
-  <meta name="description" content="Letra interactiva de 'Tal Vez' de Paulo Londra. Explora cada verso con animaciones y una experiencia visual inmersiva." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700;900&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Paulo Londra – Tal Vez ♪ Karaoke</title>
+  <meta name="description" content="Karaoke interactivo de Tal Vez - Paulo Londra ft. Ovy On The Drums"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
 
-  <!-- Particles Background -->
-  <div class="particles" id="particles"></div>
+  <!-- Background layers -->
+  <div class="bg-base"></div>
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
+  <div class="bg-orb orb-c"></div>
+  <canvas id="bgCanvas" class="bg-canvas"></canvas>
 
-  <!-- Noise Overlay -->
-  <div class="noise-overlay"></div>
-
-  <!-- Hero Section -->
-  <header class="hero" id="hero">
-    <div class="hero-bg-video">
-      <div class="hero-gradient-orb orb-1"></div>
-      <div class="hero-gradient-orb orb-2"></div>
-      <div class="hero-gradient-orb orb-3"></div>
+  <!-- Header -->
+  <header class="top-bar">
+    <div class="song-meta">
+      <span class="song-artist">PAULO LONDRA</span>
+      <span class="dot">·</span>
+      <span class="song-title-sm">Tal Vez</span>
     </div>
-
-    <div class="hero-content">
-      <div class="artist-badge">
-        <span class="badge-dot"></span>
-        <span>Paulo Londra</span>
-      </div>
-
-      <h1 class="hero-title">
-        <span class="title-line" data-text="TAL">TAL</span>
-        <span class="title-line highlight" data-text="VEZ">VEZ</span>
-      </h1>
-
-      <p class="hero-subtitle">ft. Ovy On The Drums</p>
-
-      <div class="hero-actions">
-        <a href="https://youtu.be/bX3S-_jUauc" target="_blank" class="btn-play" id="btn-yt">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-          Ver en YouTube
-        </a>
-        <button class="btn-scroll" id="btn-scroll" onclick="document.getElementById('lyrics').scrollIntoView({behavior:'smooth'})">
-          Ver Letra
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-            <path d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
-      </div>
-
-      <div class="scroll-hint">
-        <div class="scroll-hint-line"></div>
-      </div>
-    </div>
-
-    <div class="hero-visual">
-      <div class="vinyl-record" id="vinyl">
-        <div class="vinyl-outer">
-          <div class="vinyl-groove"></div>
-          <div class="vinyl-label">
-            <span class="vinyl-artist">PAULO</span>
-            <span class="vinyl-track">LONDRA</span>
-          </div>
-        </div>
-        <div class="vinyl-needle"></div>
-      </div>
-    </div>
+    <div class="section-pill" id="sectionPill">♪</div>
   </header>
 
-  <!-- Audio Visualizer Bar -->
-  <div class="visualizer-bar" id="visualizer">
-    <div class="vis-label">♪ Tal Vez</div>
-    <div class="vis-bars">
-      <div class="vis-bar" style="--delay:0s"></div>
-      <div class="vis-bar" style="--delay:0.1s"></div>
-      <div class="vis-bar" style="--delay:0.2s"></div>
-      <div class="vis-bar" style="--delay:0.15s"></div>
-      <div class="vis-bar" style="--delay:0.05s"></div>
-      <div class="vis-bar" style="--delay:0.25s"></div>
-      <div class="vis-bar" style="--delay:0.3s"></div>
-      <div class="vis-bar" style="--delay:0.08s"></div>
-      <div class="vis-bar" style="--delay:0.18s"></div>
-      <div class="vis-bar" style="--delay:0.12s"></div>
-      <div class="vis-bar" style="--delay:0.22s"></div>
-      <div class="vis-bar" style="--delay:0.35s"></div>
+  <!-- ===== KARAOKE STAGE ===== -->
+  <main class="stage" id="stage">
+
+    <!-- Idle / Pre-play screen -->
+    <div class="idle-screen" id="idleScreen">
+      <div class="idle-vinyl" id="idleVinyl">
+        <div class="idle-label">
+          <span>PAULO</span>
+          <span>LONDRA</span>
+        </div>
+      </div>
+      <h1 class="idle-song">TAL VEZ</h1>
+      <p class="idle-feat">ft. Ovy On The Drums</p>
+      <button class="idle-play-btn" id="idlePlayBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M8 5v14l11-7z"/></svg>
+        Reproducir
+      </button>
+      <p class="idle-hint" id="embedErrorMsg" style="display:none">
+        ⚠️ El video no permite incrustar.<br/>
+        <a href="https://youtu.be/bX3S-_jUauc" target="_blank">Ábrelo en YouTube</a> y usa los controles manuales.
+      </p>
     </div>
-  </div>
 
-  <!-- Lyrics Section -->
-  <main class="lyrics-container" id="lyrics">
+    <!-- Lyric stack (active state) -->
+    <div class="lyric-stack" id="lyricStack" style="display:none"></div>
 
-    <!-- Section: Intro -->
-    <section class="lyrics-section" data-section="intro">
-      <div class="section-header">
-        <div class="section-tag">Intro</div>
-        <div class="section-line"></div>
-      </div>
-      <div class="lyrics-block">
-        <p class="lyric-line" data-index="0">Ey, oh</p>
-        <p class="lyric-line" data-index="1">O-O-Ovy On The Drums</p>
-        <p class="lyric-line" data-index="2">Ey, qué será</p>
-      </div>
-    </section>
-
-    <!-- Section: Verso 1 -->
-    <section class="lyrics-section" data-section="verso1">
-      <div class="section-header">
-        <div class="section-tag">Verso 1</div>
-        <div class="section-line"></div>
-      </div>
-      <div class="lyrics-block">
-        <p class="lyric-line" data-index="3">Qué será eso que huele tan bien</p>
-        <p class="lyric-line" data-index="4">Pero en realidad sabe mal, ey</p>
-        <p class="lyric-line" data-index="5">Y que me tiene desvelándome</p>
-        <p class="lyric-line" data-index="6">Y tal vez tú me tendrías que avisar</p>
-        <p class="lyric-line" data-index="7">Cuando ya no me quieres ver, ah</p>
-        <p class="lyric-line" data-index="8">Porque yo acá sigo esperándote</p>
-        <p class="lyric-line accent" data-index="9">Qué mal por mí</p>
-        <p class="lyric-line" data-index="10">Que haga frío acá afuera y tú hoy no quieras salir</p>
-        <p class="lyric-line" data-index="11">Pero tranqui</p>
-        <p class="lyric-line" data-index="12">Que el frío y la espera siempre fue costumbre pa' mí</p>
-        <p class="lyric-line accent" data-index="13">Qué mal por mí</p>
-      </div>
-    </section>
-
-    <!-- Section: Estribillo -->
-    <section class="lyrics-section chorus-section" data-section="estribillo">
-      <div class="chorus-glow"></div>
-      <div class="section-header">
-        <div class="section-tag chorus-tag">Estribillo</div>
-        <div class="section-line"></div>
-      </div>
-      <div class="lyrics-block chorus-block">
-        <p class="lyric-line chorus-line big-line" data-index="14">Porque tal vez lo nuestro era</p>
-        <p class="lyric-line chorus-line big-line golden" data-index="15">sólo para divertirse</p>
-        <p class="lyric-line chorus-line" data-index="16">Pero este tonto suele confundirse</p>
-        <p class="lyric-line chorus-line accent" data-index="17">Y es triste</p>
-        <p class="lyric-line chorus-line" data-index="18">Que del finde ya no he vuelto a sonreír</p>
-        <p class="lyric-line chorus-line big-line" data-index="19">Tal vez lo nuestro era</p>
-        <p class="lyric-line chorus-line big-line golden" data-index="20">sólo para divertirse</p>
-        <p class="lyric-line chorus-line" data-index="21">Pero este tonto suele confundirse</p>
-        <p class="lyric-line chorus-line accent" data-index="22">Y es triste</p>
-        <p class="lyric-line chorus-line" data-index="23">Que del finde ya no he vuelto a sonreír, ey</p>
-      </div>
-    </section>
-
-    <!-- Section: Verso 2 -->
-    <section class="lyrics-section" data-section="verso2">
-      <div class="section-header">
-        <div class="section-tag">Verso 2</div>
-        <div class="section-line"></div>
-      </div>
-      <div class="lyrics-block">
-        <p class="lyric-line" data-index="24">Parece leyenda</p>
-        <p class="lyric-line" data-index="25">Maniquí, le queda bien toda las prendas</p>
-        <p class="lyric-line" data-index="26">No es como yo, a ella nada la avergüenza</p>
-        <p class="lyric-line" data-index="27">No tiene paciencia</p>
-        <p class="lyric-line" data-index="28">Le sobra experiencia</p>
-        <p class="lyric-line" data-index="29">Al frente de la audiencia</p>
-        <p class="lyric-line accent" data-index="30">Normal que deleite</p>
-        <p class="lyric-line" data-index="31">Cuando pueda verle</p>
-        <p class="lyric-line" data-index="32">Demasiado inteligente como Einstein</p>
-        <p class="lyric-line" data-index="33">Hace lo que sea, no piensa en la gente</p>
-        <p class="lyric-line" data-index="34">Una chica que la admiro desde siempre</p>
-        <p class="lyric-line" data-index="35">No la contratan pa' bailar porque se roba el show</p>
-        <p class="lyric-line" data-index="36">No quiere ser modelo porque eso le aburrió</p>
-        <p class="lyric-line" data-index="37">No puede ser locutora porque con su voz enamoró</p>
-        <p class="lyric-line accent" data-index="38">Tendría que ser ladrona porque te roba hasta el corazón</p>
-      </div>
-    </section>
-
-    <!-- Section: Pre-Estribillo -->
-    <section class="lyrics-section pre-chorus-section" data-section="preestribillo">
-      <div class="section-header">
-        <div class="section-tag">Pre-Estribillo</div>
-        <div class="section-line"></div>
-      </div>
-      <div class="lyrics-block">
-        <p class="lyric-line repeat-line" data-index="39">Entonces, ¿ahora cómo olvido de tu nombre?</p>
-        <p class="lyric-line" data-index="40">Hago mil preguntas y no respondes</p>
-        <p class="lyric-line" data-index="41">Tienes una receta secreta, y juro que me altera</p>
-        <p class="lyric-line repeat-line" data-index="42">Entonces, ¿ahora cómo olvido de tu nombre?</p>
-        <p class="lyric-line" data-index="43">Hago mil preguntas y no respondes</p>
-        <p class="lyric-line" data-index="44">Tienes una receta secreta, y juro que me altera</p>
-      </div>
-    </section>
-
-    <!-- Section: Estribillo 2 -->
-    <section class="lyrics-section chorus-section" data-section="estribillo2">
-      <div class="chorus-glow"></div>
-      <div class="section-header">
-        <div class="section-tag chorus-tag">Estribillo</div>
-        <div class="section-line"></div>
-      </div>
-      <div class="lyrics-block chorus-block">
-        <p class="lyric-line chorus-line big-line" data-index="45">Porque tal vez lo nuestro era</p>
-        <p class="lyric-line chorus-line big-line golden" data-index="46">sólo para divertirse</p>
-        <p class="lyric-line chorus-line" data-index="47">Pero este tonto suele confundirse</p>
-        <p class="lyric-line chorus-line accent" data-index="48">Y es triste</p>
-        <p class="lyric-line chorus-line" data-index="49">Que del finde ya no he vuelto a sonreír</p>
-        <p class="lyric-line chorus-line big-line" data-index="50">Tal vez lo nuestro era</p>
-        <p class="lyric-line chorus-line big-line golden" data-index="51">sólo para divertirse</p>
-        <p class="lyric-line chorus-line" data-index="52">Pero este tonto suele confundirse</p>
-        <p class="lyric-line chorus-line accent" data-index="53">Y es triste</p>
-        <p class="lyric-line chorus-line" data-index="54">Que del finde ya no he vuelto a sonreír, ey</p>
-      </div>
-    </section>
-
-    <!-- Section: Outro -->
-    <section class="lyrics-section outro-section" data-section="outro">
-      <div class="section-header">
-        <div class="section-tag outro-tag">Outro</div>
-        <div class="section-line"></div>
-      </div>
-      <div class="lyrics-block">
-        <p class="lyric-line" data-index="55">Si me contesta, un milagro</p>
-        <p class="lyric-line" data-index="56">Y si me mira, ¿qué hago?</p>
-        <p class="lyric-line" data-index="57">Seguro me quedo pensando en lo lindo que sería</p>
-        <p class="lyric-line" data-index="58">tenerte un ratito a mi lao'</p>
-        <p class="lyric-line accent" data-index="59">Solo mira, demasiado flow en esa piba</p>
-        <p class="lyric-line" data-index="60">No anda con un combo porque opaca a las amigas</p>
-        <p class="lyric-line accent" data-index="61">Asesina, me hace mal, mal</p>
-        <p class="lyric-line" data-index="62">Si la veo, llamo al 911</p>
-        <p class="lyric-line" data-index="63">Porque sí sé que verla me duele y no me hace bien</p>
-        <p class="lyric-line fade-out-line" data-index="64">Y si me habla...</p>
-      </div>
-    </section>
+    <!-- Chorus glow pulse -->
+    <div class="chorus-pulse" id="chorusPulse"></div>
 
   </main>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-content">
-      <div class="footer-logo">
-        <span class="footer-artist">Paulo Londra</span>
-        <span class="footer-sep">×</span>
-        <span class="footer-track">Tal Vez</span>
-      </div>
-      <p class="footer-credit">Diseño interactivo · 2026</p>
-      <a href="https://youtu.be/bX3S-_jUauc" target="_blank" class="footer-yt-link">
-        ▶ Ver Video Oficial
-      </a>
+  <!-- ===== YOUTUBE MINI WIDGET ===== -->
+  <div class="yt-widget" id="ytWidget">
+    <div class="yt-widget-bar">
+      <span class="yt-label">▶ Video Oficial</span>
+      <button class="yt-min-btn" id="ytMinBtn">−</button>
     </div>
-  </footer>
+    <div class="yt-frame-wrap" id="ytFrameWrap">
+      <div id="yt-player"></div>
+    </div>
+  </div>
 
-  <!-- Floating progress indicator -->
-  <div class="progress-bar" id="progressBar"></div>
+  <!-- ===== PLAYER BAR ===== -->
+  <footer class="player-bar">
+
+    <button class="play-pause-btn" id="playBtn" disabled>
+      <svg class="ico-play" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>
+      <svg class="ico-pause" viewBox="0 0 24 24" fill="currentColor" width="22" height="22" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+
+    <div class="seek-wrap">
+      <div class="seek-bar" id="seekBar">
+        <div class="seek-progress" id="seekProgress"></div>
+        <div class="seek-thumb" id="seekThumb"></div>
+      </div>
+    </div>
+
+    <span class="time-txt" id="timeTxt">0:00</span>
+
+    <button class="vid-toggle-btn" id="vidToggleBtn" title="Mostrar/ocultar video">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+        <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+      </svg>
+    </button>
+
+  </footer>
 
   <script src="app.js"></script>
 </body>
